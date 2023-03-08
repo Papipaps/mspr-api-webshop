@@ -1,4 +1,4 @@
-package fr.mspr.webshop.data.dto;
+package fr.mspr.webshop.data;
 
 public class SubProfileDetails {
 

@@ -26,12 +26,6 @@ public class ApiKeyFilter extends GenericFilterBean {
         HttpServletRequest req = (HttpServletRequest) request;
         String path = req.getRequestURI();
 
-        if(!path.startsWith("/api/webshop")){
-            chain.doFilter(request, response);
-            return;
-        }
-
-
         String key = req.getHeader("APIKEY") == null ? "" : req.getHeader("APIKEY");
         LOG.info("Trying key: " + key);
 

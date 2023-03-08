@@ -1,4 +1,4 @@
-package fr.mspr.webshop.data.dto;
+package fr.mspr.webshop.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class Company {
-    private String companyName;
+public class Adress {
+    private String postalCode;
+    private String city;
 }

@@ -1,4 +1,4 @@
-package fr.mspr.webshop.data.model;
+package fr.mspr.webshop.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class ProductDetails {
-    private float price;
-    private String description;
-    private String color;
+public class Company {
+    private String companyName;
 }
