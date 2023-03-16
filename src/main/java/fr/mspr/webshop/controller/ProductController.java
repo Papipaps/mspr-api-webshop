@@ -16,6 +16,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/webshop/product")
@@ -54,12 +55,16 @@ public class ProductController {
     }
 
     @GetMapping("mock/list")
-    public ResponseEntity<Page<?>> getProducts(
+    public ResponseEntity<?> getProducts(
             @RequestParam(required = false, defaultValue = "9") int size
             , @RequestParam(required = false, defaultValue = "0") int page) {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseProducts = null;
-        responseProducts = restTemplate.getForEntity(PRODUCT_APIURL, String.class);
+         try{
+            responseProducts = restTemplate.getForEntity(PRODUCT_APIURL, String.class);
+        }catch (HttpServerErrorException e){
+            return ResponseEntity.status(500).body(Map.of("error",true,"message","external API is not responding"));
+        }
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -76,11 +81,15 @@ public class ProductController {
     }
 
     @GetMapping("mock/customer/{customerId}/order/{id}")
-    private ResponseEntity<ProductDTO[]> getProductByUserOrder(@PathVariable Long id, @PathVariable Long customerId) {
+    private ResponseEntity<?> getProductByUserOrder(@PathVariable Long id, @PathVariable Long customerId) {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseProducts = null;
         String url = String.format("%s/%s/orders/%s/products", CUSTOMER_APIURL,customerId, id);
+        try{
         responseProducts = restTemplate.getForEntity(url, String.class);
+        }catch (HttpServerErrorException e){
+            return ResponseEntity.status(500).body(Map.of("error",true,"message","external API is not responding"));
+        }
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
