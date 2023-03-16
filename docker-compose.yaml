@@ -11,3 +11,5 @@ services:
         - app_customers_api-url=${APICUSTOMERS_URL}
         - app_products_api-url=${APIPRODUCTS_URL}
         - server_port=8082
+        - springdoc_swagger-ui_path=${SWAGGERUI_PATH}
+        - springdoc_api-docs_path=${APIDOC_PATH}
