@@ -20,12 +20,12 @@ import javax.servlet.DispatcherType;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] AUTH_WHITELIST = {
+            "/api/auth/**",
+            "/swagger-ui.html",
+            "/retailer-swagger-docs",
             "/swagger-resources/**",
-            "/swagger-ui.html/**",
-            "/swagger-ui/**",
             "/v2/api-docs",
-            "/api/auth/**"
-    };
+            "/webjars/**"};
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

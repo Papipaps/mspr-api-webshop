@@ -39,7 +39,7 @@ public class ApiKeyFilter extends GenericFilterBean {
         String APIKEY = props.getProperty("app.apikey");
 
 
-        if(APIKEY.equals(key)){
+        if(APIKEY.equals(key) || path.startsWith("/webshop-swagger-docs") || path.startsWith("/swagger-ui")){
             chain.doFilter(request, response);
         }else{
             HttpServletResponse resp = (HttpServletResponse) response;
