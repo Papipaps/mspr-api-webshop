@@ -1,23 +1,19 @@
 pipeline {
     agent any
-
     stages {
-        stage('Build') {
+        stage('Checkout Codebase') {
             steps {
-                git 'https://github.com/Papipaps/mspr-api-webshop.git'
-                sh './mvnw clean compile'
-
+                checkout scm
+                sh 'ls -l' // Vérifie que le code source est bien récupéré
             }
         }
-        stage('Test') {
+        stage('Build and Test') {
             steps {
-                sh './mvnw test'
-
+                sh './mvnw clean test' // Compile et exécute les tests unitaires
             }
-
             post {
                 always {
-                    junit '*/target/surefire-reports/TEST-.xml'
+                    junit 'target/surefire-reports/*.xml' // Publie les résultats des tests
                 }
             }
         }
