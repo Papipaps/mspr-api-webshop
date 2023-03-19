@@ -11,7 +11,12 @@ pipeline {
         
         stage('Install Java and Maven') {
             steps {
-                sh 'sudo apt-get update && sudo apt-get install -y openjdk-11-jdk maven'
+                withCredentials([string(credentialsId: 'sudo-password', variable: 'sudoPassword')]) {
+                    sh '''
+                        echo $sudoPassword | sudo -S apt-get update
+                        echo $sudoPassword | sudo -S apt-get install -y openjdk-11-jdk maven
+                    '''
+                }
             }
         }
 
