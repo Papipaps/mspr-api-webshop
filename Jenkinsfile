@@ -2,24 +2,23 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
+        stage('Build') {
             steps {
-                // Checkout the code from your SCM (e.g. Git)
-                checkout scm
+                git 'https://github.com/Papipaps/mspr-api-webshop.git'
+                sh './mvnw clean compile'
+
             }
         }
-
-        stage('Build and Test') {
+        stage('Test') {
             steps {
-                sh 'mvn clean package'
-                sh 'java -jar target/demo-0.0.1-SNAPSHOT.jar'
-                sh 'mvn test'
+                sh './mvnw test'
+
             }
-        }
 
-        stage('Deploy') {
-            steps {
-                sh 'java -jar target/demo-0.0.1-SNAPSHOT.jar'
+            post {
+                always {
+                    junit '*/target/surefire-reports/TEST-.xml'
+                }
             }
         }
     }
