@@ -2,21 +2,24 @@ pipeline {
     agent any
 
     stages {
-        stage('Clone repository') {
+        stage('Checkout') {
             steps {
-                git 'https://github.com/Papipaps/mspr-api-webshop.git'
+                // Checkout the code from your SCM (e.g. Git)
+                checkout scm
             }
         }
 
-        stage('Download Console Launcher') {
+        stage('Build') {
             steps {
-                sh 'wget https://repo.maven.apache.org/maven2/org/junit/platform/junit-platform-console-standalone/1.8.2/junit-platform-console-standalone-1.8.2.jar'
+                // Build the project using Maven and run the tests
+                sh 'mvn -B -Dmaven.test.failure.ignore=true clean package'
             }
         }
 
-        stage('Execute tests') {
+        stage('Test') {
             steps {
-                sh 'java -jar junit-platform-console-standalone-1.8.2.jar --classpath build/classes/java/main --scan-class-path'
+                // Run the unit tests using the JVM
+                sh 'java -jar -Dspring.profiles.active=test target/my-spring-boot-app.jar'
             }
         }
     }
