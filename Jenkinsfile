@@ -8,6 +8,12 @@ pipeline {
                 checkout scm
             }
         }
+        
+        stage('Install Java and Maven') {
+            steps {
+                sh 'sudo apt-get update && sudo apt-get install -y openjdk-11-jdk maven'
+            }
+        }
 
         stage('Build') {
             steps {
