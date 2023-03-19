@@ -9,7 +9,9 @@ pipeline {
         }
         stage('Build and Test') {
             steps {
-                sh './mvnw clean test' // Compile et exécute les tests unitaires
+                def mvnHome = tool name: '', type: 'maven'
+                sh "${mvnHome}/bin/mvn clean test"
+                //sh './mvnw clean test' // Compile et exécute les tests unitaires
             }
             post {
                 always {
