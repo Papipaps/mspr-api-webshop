@@ -8,29 +8,18 @@ pipeline {
                 checkout scm
             }
         }
-        
-        stage('Install Java and Maven') {
+
+        stage('Build and Test') {
             steps {
-                withCredentials([string(credentialsId: 'sudo-password', variable: 'sudoPassword')]) {
-                    sh '''
-                        echo $sudoPassword | sudo -S apt-get update
-                        echo $sudoPassword | sudo -S apt-get install -y openjdk-11-jdk maven
-                    '''
-                }
+                sh 'mvn clean package'
+                sh 'java -jar target/demo-0.0.1-SNAPSHOT.jar'
+                sh 'mvn test'
             }
         }
 
-        stage('Build') {
+        stage('Deploy') {
             steps {
-                // Build the project using Maven and run the tests
-                sh 'mvn -B -Dmaven.test.failure.ignore=true clean package'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                // Run the unit tests using the JVM
-                sh 'java -jar -Dspring.profiles.active=test target/my-spring-boot-app.jar'
+                sh 'java -jar target/demo-0.0.1-SNAPSHOT.jar'
             }
         }
     }
