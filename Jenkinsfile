@@ -1,30 +1,35 @@
 pipeline {
   agent any
+  
   stages {
-    stage('Checkout Code') {
+    stage('Checkout') {
       steps {
-        git(url: 'https://github.com/Papipaps/mspr-api-webshop.git', branch: 'main')
+        checkout([$class: 'GitSCM', branches: [[name: '*/main']], 
+                 userRemoteConfigs: [[url: 'https://github.com/Papipaps/mspr-api-webshop.git']]])
       }
     }
-
-    stage('Build') {
+    
+    stage('Maven Build') {
+      environment {
+        SECRET_FILE = credentials('secret-file-uuid')
+      }
       steps {
-        sh 'docker build -f Dockerfile .'
+        sh 'mvn clean test -DpropertiesFile=${SECRET_FILE}'
       }
     }
-
-    stage('Login to GCP') {
+    
+    stage('Docker Build') {
       steps {
-        echo '\'Login to GCP\''
+        sh 'docker build -t myapp .'
       }
     }
-
-    stage('Pushing new image to Kubernetes') {
+    
+    stage('Push Image') {
       steps {
-        echo 'Pushing image to kubernetes'
-        sh '//docker push tag/image'
+        echo 'Pushing new image to Kube...'
       }
     }
-
+    
   }
+  
 }
