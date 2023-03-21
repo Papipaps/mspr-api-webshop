@@ -9,7 +9,7 @@ pipeline {
 
     stage('Build') {
       steps {
-        sh 'docker build -f mspr-api-webshop/Dockerfile . -t tag/name'
+        sh 'docker build -f mspr-api-webshop/Dockerfile .'
       }
     }
 
