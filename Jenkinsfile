@@ -20,7 +20,7 @@ pipeline {
     
     stage('Docker Build') {
       steps {
-        sh 'docker build -t myapp .'
+        sh 'docker build -t webshop-service .'
       }
     }
     
