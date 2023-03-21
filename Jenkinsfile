@@ -14,7 +14,7 @@ pipeline {
         SECRET_FILE = credentials('615fa613-cfa3-4c60-b2de-3102d91d776a')
       }
       steps {
-        sh "mvn clean test -DpropertiesFile=${SECRET_FILE}"
+        sh 'mvn clean test -DpropertiesFile=${SECRET_FILE}'
       }
     }
     
