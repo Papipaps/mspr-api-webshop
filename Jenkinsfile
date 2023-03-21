@@ -7,5 +7,24 @@ pipeline {
       }
     }
 
+    stage('Build') {
+      steps {
+        sh 'docker build -f mspr-api-webshop/Dockerfile . -t tag/name'
+      }
+    }
+
+    stage('Login to GCP') {
+      steps {
+        echo '\'Login to GCP\''
+      }
+    }
+
+    stage('Pushing new image to Kubernetes') {
+      steps {
+        echo 'Pushing image to kubernetes'
+        sh '//docker push tag/image'
+      }
+    }
+
   }
 }
