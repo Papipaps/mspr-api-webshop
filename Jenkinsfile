@@ -9,19 +9,25 @@ pipeline {
      // }
    // }
     
-    stage('Maven Build') {
-      environment {
-        SECRET_FILE = credentials('615fa613-cfa3-4c60-b2de-3102d91d776a')
-      }
-      steps {
-        sh 'mvn clean test -DpropertiesFile=${SECRET_FILE}'
-      }
+    stage('Maven Test') {
+            steps {
+                sh 'mvn test'
+                archiveArtifacts artifacts: 'target/surefire-reports/**'
+            }
+        }
+    
+    stage('Build') {
+          steps {
+              sh 'mvn clean package -DskipTests' 
+              archiveArtifacts artifacts: 'target/*.jar'
+          }
     }
+  
     
     stage('Docker Build') {
-      steps {
-        sh 'docker build -t webshop-service .'
-      }
+        steps {
+          sh 'docker build -t webshop-service .'
+        }
     }
     
     stage('Push Image') {
