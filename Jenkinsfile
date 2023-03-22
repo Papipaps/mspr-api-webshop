@@ -1,5 +1,8 @@
 pipeline {
   agent any
+  tools {
+        maven 'maven' 
+    }
   
   stages {
     //stage('Checkout') {
@@ -11,7 +14,7 @@ pipeline {
     
     stage('Maven Test') {
             steps {
-                sh 'mvn test'
+                sh './mvnw clean test'
                 archiveArtifacts artifacts: 'target/surefire-reports/**'
             }
         }
